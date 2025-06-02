@@ -20,7 +20,7 @@ func main() {
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
-	// Caso tenha algo que impeça o servidor de iniciar, como uma porta já em uso,
+	// Caso tenha algo que impeça o servidor de iniciar, como a porta já em uso,
 	// o log irá capturar o erro
 
 	//fmt.Println(os.Getenv("TEST"))

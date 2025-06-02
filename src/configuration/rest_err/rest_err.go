@@ -11,7 +11,7 @@ type RestErr struct {
 
 // Uma lista de campos incorretos dentro da aplicação
 type Causes struct {
-	Field   string `json:"filed"`
+	Field   string `json:"field"`
 	Message string `json:"message"`
 }
 
