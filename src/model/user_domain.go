@@ -1,39 +1,56 @@
 package model
 
 import (
-	"github.com/kayquesza/gocrud-auth-api/src/configuration/rest_err"
 	"golang.org/x/crypto/bcrypt"
 )
+
+type UserDomainInterface interface {
+	GetEmail() string
+	GetPassword() string
+	GetName() string
+	GetAge() int8
+
+	EncryptPassword() error
+}
 
 func NewUserDomain(
 	email, password, name string,
 	age int8,
-) *UserDomain {
-	return &UserDomain{
+) *userDomain {
+	return &userDomain{
 		email, password, name, age,
 	}
 }
 
 // Sem o uso de tags, pois o Domain não pode ser "exportável"
-type UserDomain struct {
-	Email    string
-	Password string
-	Name     string
-	Age      int8
+type userDomain struct {
+	email    string
+	password string
+	name     string
+	age      int8
 }
 
-func (ud *UserDomain) EncryptPassword() error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(ud.Password), bcrypt.DefaultCost)
+func (ud *userDomain) GetEmail() string {
+	return ud.email
+}
+
+func (ud *userDomain) GetPassword() string {
+	return ud.password
+}
+
+func (ud *userDomain) GetName() string {
+	return ud.name
+}
+
+func (ud *userDomain) GetAge() int8 {
+	return ud.age
+}
+
+func (ud *userDomain) EncryptPassword() error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(ud.password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	ud.Password = string(hashedPassword)
+	ud.password = string(hashedPassword)
 	return nil
 } // Implementa o método EncryptPassword que irá criptografar a senha do usuário utilizando o pacote bcrypt antes de salvar no banco de dados
-
-type UserDomainInterface interface {
-	CreateUser() *rest_err.RestErr                    // Recebe um objeto do usuário e retorna um erro se houver
-	UpdateUser(string) *rest_err.RestErr              // Recebe uma string com o ID do usuário e um objeto do usuário para atualizar
-	FindUser(string) (*UserDomain, *rest_err.RestErr) // Recebe uma string com o ID do usuário e retorna um objeto do usuário e um erro se houver
-	DeleteUser(string) *rest_err.RestErr              // Recebe uma string com o ID do usuário e retorna um erro se houver
-}
