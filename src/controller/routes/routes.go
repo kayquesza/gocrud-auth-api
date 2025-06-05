@@ -5,11 +5,13 @@ import (
 	"github.com/kayquesza/gocrud-auth-api/src/controller"
 )
 
-func InitRoutes(r *gin.RouterGroup) {
+func InitRoutes(
+	r *gin.RouterGroup,
+	userController controller.UserControllerInterface) {
 
-	r.GET("/getUserById/:UserId", controller.FindUserById)
-	r.GET("/getUserByEmail/:UserEmail", controller.FindUserByEmail)
-	r.POST("/createUser", controller.CreateUser)
-	r.PUT("/updateUser/:UserId", controller.UpdateUser)
-	r.DELETE("/deleteUser/:UserId", controller.DeleteUser)
+	r.GET("/getUserById/:UserId", userController.FindUserByID)
+	r.GET("/getUserByEmail/:UserEmail", userController.FindUserByEmail)
+	r.POST("/createUser", userController.CreateUser)
+	r.PUT("/updateUser/:UserId", userController.UpdateUser)
+	r.DELETE("/deleteUser/:UserId", userController.DeleteUser)
 }
