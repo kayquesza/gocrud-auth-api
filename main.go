@@ -8,10 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/database/mongodb"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
-	"github.com/kayquesza/gocrud-auth-api/src/controller"
 	"github.com/kayquesza/gocrud-auth-api/src/controller/routes"
-	"github.com/kayquesza/gocrud-auth-api/src/model/repository"
-	"github.com/kayquesza/gocrud-auth-api/src/model/service"
 )
 
 func main() {
@@ -27,10 +24,8 @@ func main() {
 		// Caso não consiga conectar ao banco de dados, o log irá capturar o erro e o servidor não iniciará
 		return
 	}
-	// Iniciar as dependências
-	repository := repository.NewUserRepository(database)
-	service := service.NewUserDomainService(repository)
-	userController := controller.NewUserControllerInterface(service)
+
+	userController := initDependencies(database)
 
 	router := gin.Default()
 	routes.InitRoutes(&router.RouterGroup, userController)

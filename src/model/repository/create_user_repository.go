@@ -9,6 +9,7 @@ import (
 	"github.com/kayquesza/gocrud-auth-api/src/model"
 	"github.com/kayquesza/gocrud-auth-api/src/model/repository/entity/converter"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.uber.org/zap"
 )
 
 const (
@@ -27,10 +28,15 @@ func (ur *userRepository) CreateUser(
 	value := converter.ConvertDomainToEntity(userDomain)
 	result, err := collection.InsertOne(context.Background(), value)
 	if err != nil {
-		return nil, rest_err.NewInternalServerError(err.Error())
+		logger.Error("Error inserting user into MongoDB", err,
+			zap.String("journey", "createUser"))
 	}
 
 	value.ID = result.InsertedID.(primitive.ObjectID)
+
+	logger.Info("Creating user in MongoDB",
+		zap.String("userId", value.ID.Hex()),
+		zap.String("journey", "createUser"))
 	return converter.ConvertEntityToDomain(*value), nil
 
 }

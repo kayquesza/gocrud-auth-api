@@ -12,13 +12,19 @@ func (ud *userDomainInterface) CreateUser(
 ) (model.UserDomainInterface, *rest_err.RestErr) {
 
 	logger.Info("Initiating CreateUser method in UserDomain", zap.String("journey", "createUser"))
-	// Implementação da lógica de criação de usuário
 
 	userDomain.EncryptPassword()
 
 	userDomainRepository, err := ud.userRepository.CreateUser(userDomain)
 	if err != nil {
+		logger.Error("Initiating CreateUser method in UserDomain", err,
+			zap.String("journey", "createUser"))
 		return nil, err
+
 	}
+
+	logger.Info("User created successfully in UserDomain",
+		zap.String("userId", userDomainRepository.GetID()),
+		zap.String("journey", "createUser"))
 	return userDomainRepository, nil
 }
