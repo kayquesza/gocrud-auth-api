@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
 	"github.com/kayquesza/gocrud-auth-api/src/controller"
 	"github.com/kayquesza/gocrud-auth-api/src/controller/routes"
+	"github.com/kayquesza/gocrud-auth-api/src/model/repository"
 	"github.com/kayquesza/gocrud-auth-api/src/model/service"
 )
 
@@ -19,11 +21,15 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	mongodb.InitConnection()
-	// Inicializa a conexão com o MongoDB
-
+	database, err := mongodb.NewMongoDBConnection(context.Background())
+	if err != nil {
+		log.Fatalf("Error connecting to MongoDB: %s", err.Error())
+		// Caso não consiga conectar ao banco de dados, o log irá capturar o erro e o servidor não iniciará
+		return
+	}
 	// Iniciar as dependências
-	service := service.NewUserDomainService()
+	repository := repository.NewUserRepository(database)
+	service := service.NewUserDomainService(repository)
 	userController := controller.NewUserControllerInterface(service)
 
 	router := gin.Default()

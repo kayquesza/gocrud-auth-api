@@ -9,6 +9,9 @@ type UserDomainInterface interface {
 	GetPassword() string
 	GetName() string
 	GetAge() int8
+	GetID() string
+
+	SetID(string)
 
 	EncryptPassword() error
 }
@@ -16,14 +19,25 @@ type UserDomainInterface interface {
 func NewUserDomain(
 	email, password, name string,
 	age int8,
-) *userDomain {
+) *userDomain { // Retorno de uma interface com os métodos
 	return &userDomain{
-		email, password, name, age,
+		email:    email,
+		password: password,
+		name:     name,
+		age:      age,
 	}
 }
 
-// Sem o uso de tags, pois o Domain não pode ser "exportável"
+func (ud *userDomain) GetID() string {
+	return ud.ID // Retorna o ID do usuário
+}
+
+func (ud *userDomain) SetID(id string) {
+	ud.ID = id
+}
+
 type userDomain struct {
+	ID       string
 	email    string
 	password string
 	name     string
