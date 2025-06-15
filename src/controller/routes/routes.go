@@ -12,6 +12,6 @@ func InitRoutes(
 	r.GET("/getUserById/:userId", userController.FindUserByID)
 	r.GET("/getUserByEmail/:userEmail", userController.FindUserByEmail)
 	r.POST("/createUser", userController.CreateUser)
-	r.PUT("/updateUser/:UserId", userController.UpdateUser)
-	r.DELETE("/deleteUser/:UserId", userController.DeleteUser)
+	r.PUT("/updateUser/:userId", userController.UpdateUser)
+	r.DELETE("/deleteUser/:userId", userController.DeleteUser)
 }
