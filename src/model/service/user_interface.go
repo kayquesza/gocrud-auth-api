@@ -9,16 +9,24 @@ import (
 func NewUserDomainService(
 	userRepository repository.UserRepository,
 ) UserDomainService {
-	return &userDomainInterface{userRepository}
+	return &userDomainService{userRepository}
 }
 
-type userDomainInterface struct {
+type userDomainService struct {
 	userRepository repository.UserRepository
 }
 
 type UserDomainService interface {
-	CreateUser(model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) // Recebe um objeto do usuário e retorna um erro se houver
-	UpdateUser(string, model.UserDomainInterface) *rest_err.RestErr                      // Recebe uma string com o ID do usuário e um objeto do usuário para atualizar
-	FindUser(string) (*model.UserDomainInterface, *rest_err.RestErr)                     // Recebe uma string com o ID do usuário e retorna um objeto do usuário e um erro se houver
-	DeleteUser(string) *rest_err.RestErr                                                 // Recebe uma string com o ID do usuário e retorna um erro se houver
+	CreateUserService(model.UserDomainInterface) (
+		model.UserDomainInterface, *rest_err.RestErr)
+
+	FindUserByIDServices(
+		id string,
+	) (model.UserDomainInterface, *rest_err.RestErr)
+	FindUserByEmailServices(
+		email string,
+	) (model.UserDomainInterface, *rest_err.RestErr)
+
+	UpdateUser(string, model.UserDomainInterface) *rest_err.RestErr // Recebe uma string com o ID do usuário e um objeto do usuário para atualizar
+	DeleteUser(string) *rest_err.RestErr                            // Recebe uma string com o ID do usuário e retorna um erro se houver
 }

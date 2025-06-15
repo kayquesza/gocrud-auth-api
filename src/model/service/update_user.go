@@ -5,7 +5,7 @@ import (
 	"github.com/kayquesza/gocrud-auth-api/src/model"
 )
 
-func (*userDomainInterface) UpdateUser(
+func (*userDomainService) UpdateUser(
 	userId string,
 	userDomain model.UserDomainInterface,
 ) *rest_err.RestErr {

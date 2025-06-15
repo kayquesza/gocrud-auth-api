@@ -15,7 +15,7 @@ type UserDomainInterface interface {
 func NewUserDomain(
 	email, password, name string,
 	age int8,
-) *userDomain { // Retorno de uma interface com os métodos
+) UserDomainInterface { // Retorno de uma interface com os métodos
 	return &userDomain{
 		email:    email,
 		password: password,
