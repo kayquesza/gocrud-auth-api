@@ -28,5 +28,9 @@ type UserDomainService interface {
 	) (model.UserDomainInterface, *rest_err.RestErr)
 
 	UpdateUser(string, model.UserDomainInterface) *rest_err.RestErr // Recebe uma string com o ID do usuário e um objeto do usuário para atualizar
-	DeleteUser(string) *rest_err.RestErr                            // Recebe uma string com o ID do usuário e retorna um erro se houver
+	DeleteUser(string) *rest_err.RestErr
+
+	LoginUserService(
+		userDomain model.UserDomainInterface,
+	) (model.UserDomainInterface, *rest_err.RestErr)
 }
