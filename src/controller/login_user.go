@@ -19,6 +19,8 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 
 	var userRequest request.UserLogin
 
+	
+
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		logger.Error("Error trying to validade user info", err,
 			zap.String("journey", "loginUser"))
@@ -33,7 +35,7 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 		userRequest.Password,
 	)
 
-	domainResult, err := uc.service.LoginUserService(domain)
+	domainResult, token, err := uc.service.LoginUserService(domain)
 	if err != nil {
 		logger.Error("Error trying to call loginUser service.", err,
 			zap.String("journey", "loginUser"))
@@ -44,6 +46,8 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 	logger.Info("User created succesfully",
 		zap.String("userId", domainResult.GetID()),
 		zap.String("journey", "loginUser"))
+
+	c.Header("Authorization", token)
 
 	c.JSON(http.StatusOK, view.ConvertDomainToResponse(
 		domainResult,

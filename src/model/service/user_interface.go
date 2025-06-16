@@ -9,7 +9,7 @@ import (
 func NewUserDomainService(
 	userRepository repository.UserRepository,
 ) UserDomainService {
-	return &userDomainService{userRepository}
+	return &userDomainService{userRepository: userRepository}
 }
 
 type userDomainService struct {
@@ -32,5 +32,5 @@ type UserDomainService interface {
 
 	LoginUserService(
 		userDomain model.UserDomainInterface,
-	) (model.UserDomainInterface, *rest_err.RestErr)
+	) (model.UserDomainInterface, string, *rest_err.RestErr)
 }
