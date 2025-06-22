@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/rest_err"
@@ -22,8 +21,8 @@ func (ur *userRepository) FindUserByEmail(
 	logger.Info("Initiating findUserByEmail method in UserRepository",
 		zap.String("journey", "findUserByEmail"))
 
-	colletion_name := os.Getenv(MONGODB_USER_COLLECTION)
-	collection := ur.databaseConnection.Collection(colletion_name)
+	collection_name := getCollectionName()
+	collection := ur.databaseConnection.Collection(collection_name)
 
 	userEntity := &entity.UserEntity{}
 
@@ -63,8 +62,8 @@ func (ur *userRepository) FindUserByID(
 	logger.Info("Initiating findUserByID method in UserRepository",
 		zap.String("journey", "findUserByID"))
 
-	colletion_name := os.Getenv(MONGODB_USER_COLLECTION)
-	collection := ur.databaseConnection.Collection(colletion_name)
+	collection_name := getCollectionName()
+	collection := ur.databaseConnection.Collection(collection_name)
 
 	userEntity := &entity.UserEntity{}
 
@@ -105,8 +104,8 @@ func (ur *userRepository) FindUserByEmailAndPassword(
 	logger.Info("Initiating findUserByEmailAndPassword method in UserRepository",
 		zap.String("journey", "findUserByEmailAndPassword"))
 
-	colletion_name := os.Getenv(MONGODB_USER_COLLECTION)
-	collection := ur.databaseConnection.Collection(colletion_name)
+	collection_name := getCollectionName()
+	collection := ur.databaseConnection.Collection(collection_name)
 
 	userEntity := &entity.UserEntity{}
 

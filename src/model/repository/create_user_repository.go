@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"os"
 
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/rest_err"
@@ -18,9 +17,9 @@ func (ur *userRepository) CreateUser(
 	logger.Info("Initiating CreateUser method in UserRepository",
 		zap.String("journey", "createUser"))
 
-	colletion_name := os.Getenv(MONGODB_USER_COLLECTION)
+	collection_name := getCollectionName()
 
-	collection := ur.databaseConnection.Collection(colletion_name)
+	collection := ur.databaseConnection.Collection(collection_name)
 
 	value := converter.ConvertDomainToEntity(userDomain)
 	result, err := collection.InsertOne(context.Background(), value)

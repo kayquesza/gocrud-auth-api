@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"os"
 
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/rest_err"
@@ -17,8 +16,8 @@ func (ur *userRepository) DeleteUser(
 	logger.Info("Initiating deleteUser repository",
 		zap.String("journey", "deleteUser"))
 
-	colletion_name := os.Getenv(MONGODB_USER_COLLECTION)
-	collection := ur.databaseConnection.Collection(colletion_name)
+	collection_name := getCollectionName()
+	collection := ur.databaseConnection.Collection(collection_name)
 
 	userIdHex, _ := primitive.ObjectIDFromHex(userId)
 

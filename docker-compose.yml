@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: crudInit
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    container_name: gocrud-auth-api
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_URL: mongodb://mongo:27017
+      MONGODB_USER_DB: crudInit
+      MONGODB_USER_COLLECTION: users
+      JWT_SECRET_KEY: your-secret-key-here
+      LOG_OUTPUT: stdout
+      LOG_LEVEL: info
+    # Se quiser usar .env, descomente a linha abaixo
+    # env_file:
+    #   - .env
+    restart: always
+
+volumes:
+  mongo_data: 

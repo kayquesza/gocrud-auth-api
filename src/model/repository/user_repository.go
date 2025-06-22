@@ -1,14 +1,31 @@
 package repository
 
 import (
+	"os"
+
+	"github.com/kayquesza/gocrud-auth-api/src/configuration/logger"
 	"github.com/kayquesza/gocrud-auth-api/src/configuration/rest_err"
 	"github.com/kayquesza/gocrud-auth-api/src/model"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.uber.org/zap"
 )
 
 const (
 	MONGODB_USER_COLLECTION = "MONGODB_USER_COLLECTION"
+	DEFAULT_COLLECTION_NAME = "users" // Valor padrão hard-coded
 )
+
+// getCollectionName retorna o nome da collection com fallback para valor padrão
+func getCollectionName() string {
+	collectionName := os.Getenv(MONGODB_USER_COLLECTION)
+	if collectionName == "" {
+		logger.Info("MONGODB_USER_COLLECTION not defined, using default collection name",
+			zap.String("defaultCollection", DEFAULT_COLLECTION_NAME),
+			zap.String("journey", "repository"))
+		return DEFAULT_COLLECTION_NAME
+	}
+	return collectionName
+}
 
 func NewUserRepository(
 	database *mongo.Database, // Conexão com o banco de dados MongoDB
