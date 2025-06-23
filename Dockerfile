@@ -1,5 +1,5 @@
 # Etapa 1: Build
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24-alpine AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
@@ -10,7 +10,7 @@ RUN go build -o gocrud-auth-api main.go init_dependencies.go
 FROM gcr.io/distroless/base-debian11
 WORKDIR /app
 COPY --from=builder /app/gocrud-auth-api .
-COPY .env.example .
+COPY .env .
 ENV GIN_MODE=release
 EXPOSE 8080
 CMD ["/app/gocrud-auth-api"] 

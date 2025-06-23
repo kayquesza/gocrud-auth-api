@@ -7,7 +7,7 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_DATABASE: crudInit
+      MONGO_INITDB_DATABASE: ${MONGODB_USER_DB}
     volumes:
       - mongo_data:/data/db
 
@@ -19,12 +19,12 @@ services:
     ports:
       - "8080:8080"
     environment:
-      MONGODB_URL: mongodb://mongo:27017
-      MONGODB_USER_DB: crudInit
-      MONGODB_USER_COLLECTION: users
-      JWT_SECRET_KEY: your-secret-key-here
-      LOG_OUTPUT: stdout
-      LOG_LEVEL: info
+      MONGODB_URL: ${MONGODB_URL}
+      MONGODB_USER_DB: ${MONGODB_USER_DB}
+      MONGODB_USER_COLLECTION: ${MONGODB_USER_COLLECTION}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      LOG_OUTPUT: ${LOG_OUTPUT}
+      LOG_LEVEL: ${LOG_LEVEL}
     # Se quiser usar .env, descomente a linha abaixo
     # env_file:
     #   - .env
