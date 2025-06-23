@@ -10,7 +10,6 @@ RUN go build -o gocrud-auth-api main.go init_dependencies.go
 FROM gcr.io/distroless/base-debian11
 WORKDIR /app
 COPY --from=builder /app/gocrud-auth-api .
-COPY .env .
 ENV GIN_MODE=release
 EXPOSE 8080
 CMD ["/app/gocrud-auth-api"] 

@@ -144,4 +144,30 @@ Sinta-se à vontade para abrir issues, pull requests ou sugerir melhorias!
 
 ---
 
-> Projeto desenvolvido por Kayque Souza. 
+> Projeto desenvolvido por Kayque Souza.
+
+## Como rodar o projeto localmente
+
+1. **Clone o repositório:**
+   ```sh
+   git clone <url-do-seu-repo>
+   cd gocrud-auth-api
+   ```
+
+2. **Configure as variáveis de ambiente:**
+   - Copie o arquivo de exemplo:
+     ```sh
+     cp .env-example .env
+     ```
+   - Edite o arquivo `.env` conforme necessário para o seu ambiente.
+
+3. **Suba a aplicação com Docker Compose:**
+   ```sh
+   docker-compose up --build
+   ```
+   Ou, se preferir, utilize o Makefile:
+   ```sh
+   make docker-run
+   ```
+
+Isso irá iniciar tanto a API quanto o MongoDB automaticamente, utilizando as configurações do seu arquivo `.env`. 
