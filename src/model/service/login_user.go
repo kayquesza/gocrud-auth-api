@@ -10,11 +10,11 @@ import (
 
 // Função que faz login de um usuário
 func (ud *userDomainService) LoginUserService(
-	userDomain model.UserDomainInterface, // Domínio de usuário
+	userDomain model.UserDomainInterface, 
 ) (model.UserDomainInterface, string, *rest_err.RestErr) { // Retorna o domínio de usuário, o token e um erro
 
-	logger.Info("Initiating loginUser", // Mensagem de log
-		zap.String("journey", "loginUser")) // Jornada da autenticação de um usuário
+	logger.Info("Initiating loginUser", 
+		zap.String("journey", "loginUser")) 
 
 	user, err := ud.userRepository.FindUserByEmail(userDomain.GetEmail()) // Busca o usuário por email
 	if err != nil {
@@ -22,17 +22,17 @@ func (ud *userDomainService) LoginUserService(
 	}
 
 	errBcrypt := bcrypt.CompareHashAndPassword([]byte(user.GetPassword()), []byte(userDomain.GetPassword())) // Compara a senha do usuário com a senha do domínio
-	if errBcrypt != nil {                                                                                    // Se a senha do usuário não for igual à senha do domínio, retorna um erro
-		return nil, "", rest_err.NewForbiddenError("User or password invalid") // Retorna um erro de usuário ou senha inválidos
+	if errBcrypt != nil {                                                                                    
+		return nil, "", rest_err.NewForbiddenError("User or password invalid") 
 	}
 
 	token, err := user.GenerateToken() // Gera o token do usuário
-	if err != nil {                    // Se houver algum erro, retorna um erro
+	if err != nil {                    
 		return nil, "", err // retorna um nulo; uma string vazia, por não ter token gerado; e o erro
 	}
 
-	logger.Info("loginUser service executed successfully", // Mensagem de log
-		zap.String("userId", user.GetID()), // ID do usuário
-		zap.String("journey", "loginUser")) // Jornada da autenticação de um usuário
-	return user, token, nil // Retorna o domínio de usuário, o token e nil
+	logger.Info("loginUser service executed successfully", 
+		zap.String("userId", user.GetID()), 
+		zap.String("journey", "loginUser")) 
+	return user, token, nil 
 }

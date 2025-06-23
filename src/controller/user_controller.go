@@ -5,11 +5,12 @@ import (
 	"github.com/kayquesza/gocrud-auth-api/src/model/service"
 )
 
-func NewUserControllerInterface( // Função que recebe um serviço de domínio de usuário e retorna um controlador de usuário
-	serviceInterface service.UserDomainService, // Serviço de domínio de usuário
-) UserControllerInterface { // Retorna um controlador de usuário
-	return &userControllerInterface{ // Retorna um controlador de usuário
-		service: serviceInterface, // Serviço de domínio de usuário
+// Função que recebe um serviço de domínio de usuário e retorna um controlador de usuário
+func NewUserControllerInterface( 
+	serviceInterface service.UserDomainService, 
+) UserControllerInterface { 
+	return &userControllerInterface{ 
+		service: serviceInterface, 
 	}
 }
 
@@ -26,5 +27,5 @@ type UserControllerInterface interface {
 
 // Struct que define o controlador de usuário
 type userControllerInterface struct {
-	service service.UserDomainService // Serviço de domínio de usuário
+	service service.UserDomainService 
 }

@@ -12,16 +12,17 @@ import (
 	"go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) LoginUser(c *gin.Context) { // Função que recebe um contexto do Gin e faz login de um usuário
-	logger.Info("Init loginUser Controller", // Mensagem de log
-		zap.String("journey", "loginUser"), // Jornada da autenticação de um usuário
+// Função que recebe um contexto do Gin e faz login de um usuário
+func (uc *userControllerInterface) LoginUser(c *gin.Context) { 
+	logger.Info("Init loginUser Controller", 
+		zap.String("journey", "loginUser"), 
 	)
 
 	var userRequest request.UserLogin // Variável para armazenar o corpo da requisição
 
-	if err := c.ShouldBindJSON(&userRequest); err != nil { // Se houver algum erro, retornará um erro 400 com a mensagem de erro
-		logger.Error("Error trying to validade user info", err, // Mensagem de log
-			zap.String("journey", "loginUser")) // Jornada da autenticação de um usuário
+	if err := c.ShouldBindJSON(&userRequest); err != nil { 
+		logger.Error("Error trying to validade user info", err, 
+			zap.String("journey", "loginUser")) 
 		errRest := validation.ValidadeUserError(err) // Valida o usuário
 
 		c.JSON(errRest.Code, errRest) // Retorna o erro 400 com a mensagem de erro
@@ -29,25 +30,25 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) { // Função que r
 	}
 
 	domain := model.NewUserLoginDomain( // Cria um novo domínio de login de usuário
-		userRequest.Email,    // Email do usuário
-		userRequest.Password, // Senha do usuário
+		userRequest.Email,    
+		userRequest.Password, 
 	)
 
 	domainResult, token, err := uc.service.LoginUserService(domain) // Faz o login do usuário
-	if err != nil {                                                 // Se houver algum erro, retornará um erro 500 com a mensagem de erro
-		logger.Error("Error trying to call loginUser service.", err, // Mensagem de log
-			zap.String("journey", "loginUser")) // Jornada da autenticação de um usuário
+	if err != nil {                                               
+		logger.Error("Error trying to call loginUser service.", err, 
+			zap.String("journey", "loginUser"))
 		c.JSON(err.Code, err) // Retorna o erro 500 com a mensagem de erro
 		return
 	}
 
-	logger.Info("User created succesfully", // Mensagem de log
-		zap.String("userId", domainResult.GetID()), // ID do usuário
-		zap.String("journey", "loginUser"))         // Jornada da autenticação de um usuário
+	logger.Info("User created succesfully", 
+		zap.String("userId", domainResult.GetID()), 
+		zap.String("journey", "loginUser"))        
 
 	c.Header("Authorization", token) // Define o token de autenticação
 
-	c.JSON(http.StatusOK, view.ConvertDomainToResponse( // Converte o domínio de usuário para uma resposta
+	c.JSON(http.StatusOK, view.ConvertDomainToResponse(
 		domainResult, // Domínio de usuário
 	))
 

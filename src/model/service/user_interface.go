@@ -8,14 +8,14 @@ import (
 
 // Função que cria um novo serviço de domínio de usuário
 func NewUserDomainService(
-	userRepository repository.UserRepository, // Repositório de usuários
-) UserDomainService { // Retorna um serviço de domínio de usuário
-	return &userDomainService{userRepository: userRepository} // Retorna um serviço de domínio de usuário
+	userRepository repository.UserRepository,
+) UserDomainService {
+	return &userDomainService{userRepository: userRepository}
 }
 
 // Struct que define o serviço de domínio de usuário
 type userDomainService struct {
-	userRepository repository.UserRepository // Repositório de usuários
+	userRepository repository.UserRepository
 }
 
 // Interface que define os métodos que o serviço de domínio de usuário deve implementar
@@ -24,7 +24,7 @@ type UserDomainService interface {
 		model.UserDomainInterface, *rest_err.RestErr) // Retorna o domínio de usuário e um erro
 
 	FindUserByIDServices( // Método que busca um usuário por ID
-		id string, // ID do usuário
+		id string,
 	) (model.UserDomainInterface, *rest_err.RestErr) // Retorna o domínio de usuário e um erro
 	FindUserByEmailServices( // Método que busca um usuário por email
 		email string,
@@ -34,6 +34,6 @@ type UserDomainService interface {
 	DeleteUser(string) *rest_err.RestErr                            // Retorna um erro
 
 	LoginUserService( // Método que faz login de um usuário
-		userDomain model.UserDomainInterface, // Domínio de usuário
+		userDomain model.UserDomainInterface,
 	) (model.UserDomainInterface, string, *rest_err.RestErr) // Retorna o domínio de usuário, o token e um erro
 }
