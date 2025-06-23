@@ -8,18 +8,19 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// Declaração de variáveis de ambiente para o logger
 var (
 	log        *zap.Logger    // Variável privada para o logger
 	LOG_OUTPUT = "LOG_OUTPUT" // Variável de ambiente para o output do log
 	LOG_LEVEL  = "LOG_LEVEL"  // Variável de ambiente para o nível do log
 )
 
-func init() {
+func init() { // Função para inicializar o logger
 	logConfig := zap.Config{
-		OutputPaths: []string{getOutputLogs()},
-		Level:       zap.NewAtomicLevelAt(getLevelLogs()),
-		Encoding:    "json",
-		EncoderConfig: zapcore.EncoderConfig{
+		OutputPaths: []string{getOutputLogs()},            // Obtém o output do log
+		Level:       zap.NewAtomicLevelAt(getLevelLogs()), // Obtém o nível do log
+		Encoding:    "json",                               // Define o formato do log como JSON
+		EncoderConfig: zapcore.EncoderConfig{ // Configuração do encoder
 			LevelKey:     "level",
 			TimeKey:      "time",
 			MessageKey:   "message",
@@ -29,38 +30,38 @@ func init() {
 		},
 	}
 
-	log, _ = logConfig.Build()
+	log, _ = logConfig.Build() // Constroi o logger
 }
 
-func Info(message string, tags ...zap.Field) {
-	log.Info(message, tags...)
-	log.Sync() // Garante que os logs sejam escritos imediatamente
+func Info(message string, tags ...zap.Field) { // Função para registrar logs de informação
+	log.Info(message, tags...) // Registra o log de informação
+	log.Sync()                 // Garante que os logs sejam escritos imediatamente
 }
 
-func Error(message string, err error, tags ...zap.Field) {
+func Error(message string, err error, tags ...zap.Field) { // Função para registrar logs de erro
 	tags = append(tags, zap.NamedError("error", err)) // Criar um campo de erro no log
 	log.Info(message, tags...)
 	log.Sync() // Garante que os logs sejam escritos imediatamente
 }
 
-func getOutputLogs() string {
-	output := strings.ToLower(strings.TrimSpace(os.Getenv(LOG_OUTPUT)))
+func getOutputLogs() string { // Função que lê a v.A LOG_OUTPUT
+	output := strings.ToLower(strings.TrimSpace(os.Getenv(LOG_OUTPUT))) // Remove espaços em branco e converte para minúsculas
 	if output == "" {
-		return "stdout"
+		return "stdout" // Se a v.A estiver vazia, retorna "stdout"
 	}
 
 	return output
 }
 
-func getLevelLogs() zapcore.Level {
-	switch strings.ToLower(strings.TrimSpace(os.Getenv(LOG_LEVEL))) {
+func getLevelLogs() zapcore.Level { // Função que lê a v.A LOG_LEVEL
+	switch strings.ToLower(strings.TrimSpace(os.Getenv(LOG_LEVEL))) { // Remove espaços em branco e converte para minúsculas
 	case "info":
-		return zapcore.InfoLevel
+		return zapcore.InfoLevel // Se a v.A for "info", retorna o nível de informação
 	case "error":
-		return zapcore.ErrorLevel
+		return zapcore.ErrorLevel // Se a v.A for "error", retorna o nível de erro
 	case "debug":
-		return zapcore.DebugLevel
+		return zapcore.DebugLevel // Se a v.A for "debug", retorna o nível de depuração
 	default:
-		return zapcore.InfoLevel
+		return zapcore.InfoLevel // Se a v.A for "info", retorna como padrão
 	}
 }

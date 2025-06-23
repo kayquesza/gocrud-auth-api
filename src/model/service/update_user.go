@@ -7,22 +7,23 @@ import (
 	"go.uber.org/zap"
 )
 
+// Função que atualiza um usuário
 func (ud *userDomainService) UpdateUser(
-	userId string,
-	userDomain model.UserDomainInterface,
-) *rest_err.RestErr {
-	logger.Info("Initiating updateUser method in UserDomain",
-		zap.String("journey", "updateUser"))
+	userId string, // ID do usuário
+	userDomain model.UserDomainInterface, // Domínio de usuário
+) *rest_err.RestErr { // Retorna um erro
+	logger.Info("Initiating updateUser method in UserDomain", // Mensagem de log
+		zap.String("journey", "updateUser")) // Jornada da atualização de um usuário
 
-	err := ud.userRepository.UpdateUser(userId, userDomain)
-	if err != nil {
-		logger.Error("Initiating updateUser method in UserDomain", err,
-			zap.String("journey", "updateUser"))
-		return err
+	err := ud.userRepository.UpdateUser(userId, userDomain) // Atualiza o usuário no banco de dados
+	if err != nil {                                         // Se houver algum erro, retorna um erro
+		logger.Error("Initiating updateUser method in UserDomain", err, // Mensagem de log
+			zap.String("journey", "updateUser")) // Jornada da atualização de um usuário
+		return err // Retorna um erro
 	}
 
-	logger.Info("updateUser service executed successfully",
-		zap.String("userId", userId),
-		zap.String("journey", "updateUser"))
-	return nil
+	logger.Info("updateUser service executed successfully", // Mensagem de log
+		zap.String("userId", userId),        // ID do usuário
+		zap.String("journey", "updateUser")) // Jornada da atualização de um usuário
+	return nil // Retorna nil
 }

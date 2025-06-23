@@ -6,19 +6,20 @@ import (
 	"go.uber.org/zap"
 )
 
-func (ud *userDomainService) DeleteUser(userId string) *rest_err.RestErr {
-	logger.Info("Initiating deleteUser method in UserDomain",
-		zap.String("journey", "deleteUser"))
+// Função que deleta um usuário
+func (ud *userDomainService) DeleteUser(userId string) *rest_err.RestErr { // Retorna um erro
+	logger.Info("Initiating deleteUser method in UserDomain", // Mensagem de log
+		zap.String("journey", "deleteUser")) // Jornada da deleção de um usuário
 
-	err := ud.userRepository.DeleteUser(userId)
-	if err != nil {
-		logger.Error("Error trying to call repository", err,
-			zap.String("journey", "deleteUser"))
-		return err
+	err := ud.userRepository.DeleteUser(userId) // Deleta o usuário no banco de dados
+	if err != nil {                             // Se houver algum erro, retorna um erro
+		logger.Error("Error trying to call repository", err, // Mensagem de log
+			zap.String("journey", "deleteUser")) // Jornada da deleção de um usuário
+		return err // Retorna um erro
 	}
 
-	logger.Info("deleteUser service executed successfully",
-		zap.String("userId", userId),
-		zap.String("journey", "deleteUser"))
-	return nil
+	logger.Info("deleteUser service executed successfully", // Mensagem de log
+		zap.String("userId", userId),        // ID do usuário
+		zap.String("journey", "deleteUser")) // Jornada da deleção de um usuário
+	return nil // Retorna nil
 }
